@@ -6,8 +6,10 @@ app.UseStaticFiles();
 // Strona główna
 app.MapGet("/", () => Results.Content(@"
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saper - Strona Główna</title>
     <style>
         :root {
@@ -224,8 +226,10 @@ app.MapGet("/", () => Results.Content(@"
 // Strona z grą
 app.MapGet("/game", () => Results.Content(@"
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saper - Gra</title>
     <style>
         :root {
