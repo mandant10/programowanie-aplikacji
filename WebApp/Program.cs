@@ -11,12 +11,12 @@ app.MapGet("/", () => Results.Content(@"
     <title>Saper - Strona Główna</title>
     <style>
         :root {
-            --bg-color: #f0f0f0;
-            --text-color: #333;
-            --button-bg: #4CAF50;
-            --button-hover: #45a049;
-            --card-bg: #fff;
-            --border-color: #ddd;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
         }
         
         [data-theme='dark'] {
@@ -229,12 +229,12 @@ app.MapGet("/game", () => Results.Content(@"
     <title>Saper - Gra</title>
     <style>
         :root {
-            --bg-color: #f0f0f0;
-            --text-color: #333;
-            --button-bg: #4CAF50;
-            --button-hover: #45a049;
-            --card-bg: #fff;
-            --border-color: #ddd;
+            --bg-color: #f8fafc;
+            --text-color: #1e293b;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
         }
         
         [data-theme='dark'] {
@@ -291,22 +291,47 @@ app.MapGet("/game", () => Results.Content(@"
             background: var(--button-hover);
         }
         
-        .game-container { margin: 20px auto; display: inline-block; }
+        .game-container { 
+            margin: 20px auto; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            max-width: 100%; 
+        }
         .stats { margin: 10px 0; font-size: 18px; }
-        .game-board { border: 2px solid #333; display: inline-block; background: #c0c0c0; }
-        .cell { width: 30px; height: 30px; border: 1px solid #999; display: inline-block; 
-                text-align: center; line-height: 30px; cursor: pointer; background: #e0e0e0;
-                font-weight: bold; font-size: 14px; }
-        .cell:hover { background: #d0d0d0; }
-        .cell.revealed { background: #f8f8f8; border: 1px inset #999; }
-        .cell.mine { background: #ff4444; }
-        .cell.flagged { background: #ffff44; }
-        .row { height: 30px; white-space: nowrap; }
+        .game-board { 
+            border: 2px solid #334155; 
+            display: grid; 
+            gap: 0; 
+            background: #cbd5e1; 
+            padding: 4px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .cell { 
+            width: 30px; 
+            height: 30px; 
+            border: 1px solid #64748b; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; 
+            background: #f1f5f9;
+            font-weight: bold; 
+            font-size: 14px; 
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+        .cell:hover { background: #e2e8f0; }
+        .cell.revealed { background: #ffffff; border: 1px inset #94a3b8; }
+        .cell.mine { background: #ef4444; color: white; }
+        .cell.flagged { background: #fbbf24; }
         .controls { margin: 20px 0; }
         button { padding: 10px 20px; font-size: 16px; cursor: pointer; 
-                 background: var(--button-bg); color: white; border: none; border-radius: 5px; }
-        button:hover { background: var(--button-hover); }
-        select { padding: 10px; font-size: 16px; }
+                 background: var(--button-bg); color: white; border: none; border-radius: 8px; 
+                 transition: all 0.2s ease; }
+        button:hover { background: var(--button-hover); transform: translateY(-1px); }
+        select { padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -415,11 +440,10 @@ app.MapGet("/game", () => Results.Content(@"
         function renderBoard() {
             let boardDiv = document.getElementById('game-board');
             boardDiv.innerHTML = '';
-            boardDiv.style.width = (cols * 32) + 'px';
+            boardDiv.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+            boardDiv.style.gridTemplateRows = `repeat(${rows}, 30px)`;
             
             for (let r = 0; r < rows; r++) {
-                let rowDiv = document.createElement('div');
-                rowDiv.className = 'row';
                 for (let c = 0; c < cols; c++) {
                     let cell = document.createElement('div');
                     cell.className = 'cell';
@@ -439,9 +463,8 @@ app.MapGet("/game", () => Results.Content(@"
                             cell.style.color = ['','blue','green','red','purple','maroon','turquoise','black','gray'][board[r][c]];
                         }
                     }
-                    rowDiv.appendChild(cell);
+                    boardDiv.appendChild(cell);
                 }
-                boardDiv.appendChild(rowDiv);
             }
         }
 
