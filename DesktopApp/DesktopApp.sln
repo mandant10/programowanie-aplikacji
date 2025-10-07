@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.10725.231 main
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution items", "_solution items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\Tips and Tricks.txt = .github\Tips and Tricks.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Copilot", "Copilot", "{B270024B-D265-4339-94AD-DAB69DDE7DD3}"
+	ProjectSection(SolutionItems) = preProject
+		.github\copilot-instructions.md = .github\copilot-instructions.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopApp", "DesktopApp\DesktopApp.csproj", "{695ECCE2-46BC-2BCE-4659-25909A54D77F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{695ECCE2-46BC-2BCE-4659-25909A54D77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{695ECCE2-46BC-2BCE-4659-25909A54D77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{695ECCE2-46BC-2BCE-4659-25909A54D77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{695ECCE2-46BC-2BCE-4659-25909A54D77F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B270024B-D265-4339-94AD-DAB69DDE7DD3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C85E907-6ACF-4DD8-A409-36B41C3E0630}
+	EndGlobalSection
+EndGlobal
