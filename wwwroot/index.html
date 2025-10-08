@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Saper — Strona główna</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>🎮 Saper</h1>
+    <p class="lead">Klasyczna gra Saper — wybierz poziom trudności i pobij rekordy!</p>
+
+    <div class="player-section">
+      <label for="playerName">Twoje imię:</label>
+      <input type="text" id="playerName" placeholder="Gracz" maxlength="50" />
+      <button onclick="savePlayerName()">Zapisz</button>
+      <span id="playerGreeting"></span>
+    </div>
+
+    <section class="home-grid">
+      <div class="panel">
+        <h2>🎯 Graj teraz</h2>
+        <div class="buttons">
+          <a class="btn btn-easy" href="game.html?mode=easy">Łatwy (9x9, 10 min)</a>
+          <a class="btn btn-medium" href="game.html?mode=medium">Średni (16x16, 40 min)</a>
+          <a class="btn btn-hard" href="game.html?mode=hard">Trudny (30x16, 99 min)</a>
+        </div>
+      </div>
+
+      <div class="panel" id="top-scores">
+        <h2>🏆 Najlepsze wyniki</h2>
+        <div class="tabs">
+          <button class="tab active" onclick="loadScores('all')">Wszystkie</button>
+          <button class="tab" onclick="loadScores('easy')">Łatwy</button>
+          <button class="tab" onclick="loadScores('medium')">Średni</button>
+          <button class="tab" onclick="loadScores('hard')">Trudny</button>
+        </div>
+        <div id="scores">Ładowanie...</div>
+      </div>
+
+      <div class="panel" id="rewards">
+        <h2>🎁 Oś nagród</h2>
+        <p>Odblokuj nowe tekstury liczb przechodząc poziomy.</p>
+        <div class="rewards-track" id="rewards-track">
+          Ładowanie...
+        </div>
+        <p class="note">Obecna tekstura: <strong id="current-texture">ładowanie...</strong></p>
+      </div>
+    </section>
+
+    <footer>
+      <small>Powered by ASP.NET Core Web API • Dane przechowywane w pamięci serwera</small>
+    </footer>
+  </main>
+
+  <script src="home.js"></script>
+</body>
+</html>

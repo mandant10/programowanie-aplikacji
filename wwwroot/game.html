@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Saper - Gra</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="container">
+    <div class="game-header">
+      <a href="index.html" class="back-link">← Powrót</a>
+      <h1>🎮 Saper - <span id="difficulty-name">Łatwy</span></h1>
+    </div>
+
+    <div class="game-controls">
+      <div class="control-item">
+        <span class="label">💣 Min:</span>
+        <span id="mines-count" class="value">10</span>
+      </div>
+      <div class="control-item">
+        <span class="label">🚩 Flagi:</span>
+        <span id="flags-count" class="value">0</span>
+      </div>
+      <div class="control-item">
+        <span class="label">⏱️ Czas:</span>
+        <span id="timer" class="value">0:00</span>
+      </div>
+      <div class="control-item">
+        <button id="new-game-btn" class="btn btn-small" onclick="initGame()">🔄 Nowa gra</button>
+      </div>
+    </div>
+
+    <div id="game-message" class="game-message"></div>
+
+    <div id="game-board" class="game-board"></div>
+
+    <div class="game-footer">
+      <p class="hint">💡 Lewy klik: odkryj pole | Prawy klik: postaw flagę</p>
+    </div>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
