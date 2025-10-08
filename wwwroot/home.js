@@ -22,13 +22,22 @@ function showPlayerGreeting(name) {
 }
 
 // Załaduj wyniki
-async function loadScores(difficulty = 'all') {
+async function loadScores(difficulty = 'all', event = null) {
   const scoresDiv = document.getElementById('scores');
   scoresDiv.innerHTML = 'Ładowanie...';
   
   // Aktualizuj aktywną zakładkę
   document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-  event?.target?.classList.add('active');
+  if (event?.target) {
+    event.target.classList.add('active');
+  } else {
+    // Jeśli brak eventu, aktywuj odpowiednią zakładkę
+    const tabs = document.querySelectorAll('.tab');
+    if (difficulty === 'all') tabs[0]?.classList.add('active');
+    else if (difficulty === 'easy') tabs[1]?.classList.add('active');
+    else if (difficulty === 'medium') tabs[2]?.classList.add('active');
+    else if (difficulty === 'hard') tabs[3]?.classList.add('active');
+  }
   
   try {
     const url = difficulty === 'all' 
