@@ -18,7 +18,10 @@ let gameState = {
   gameWon: false,
   startTime: null,
   timerInterval: null,
-  elapsedSeconds: 0
+  elapsedSeconds: 0,
+  hintTimer: null,
+  lastInteractionTime: null,
+  hintTarget: null
 };
 
 // Inicjalizacja gry
@@ -38,11 +41,19 @@ function initGame() {
   gameState.startTime = null;
   gameState.elapsedSeconds = 0;
   gameState.flags = [];
+  gameState.lastInteractionTime = null;
+  gameState.hintTarget = null;
   
   // Zatrzymaj timer
   if (gameState.timerInterval) {
     clearInterval(gameState.timerInterval);
     gameState.timerInterval = null;
+  }
+  
+  // Zatrzymaj hint timer
+  if (gameState.hintTimer) {
+    clearTimeout(gameState.hintTimer);
+    gameState.hintTimer = null;
   }
   
   // Wygeneruj planszę
@@ -51,6 +62,10 @@ function initGame() {
   updateFlagsCount();
   updateTimer();
   hideMessage();
+  hideHint();
+  
+  // Rozpocznij nasłuchiwanie na podpowiedzi
+  startHintTimer();
 }
 
 // Generuj planszę z minami
@@ -157,6 +172,9 @@ function revealCell(row, col) {
   if (gameState.revealed[row][col]) return;
   if (gameState.flags.some(f => f.row === row && f.col === col)) return;
   
+  // Reset hint timer przy interakcji
+  resetHintTimer();
+  
   // Rozpocznij timer przy pierwszym kliknięciu
   if (!gameState.startTime) {
     startTimer();
@@ -209,6 +227,9 @@ function toggleFlag(row, col) {
   if (gameState.gameOver || gameState.gameWon) return;
   if (gameState.revealed[row][col]) return;
   
+  // Reset hint timer przy interakcji
+  resetHintTimer();
+  
   const flagIndex = gameState.flags.findIndex(f => f.row === row && f.col === col);
   
   if (flagIndex >= 0) {
@@ -251,6 +272,13 @@ async function gameOver(won) {
   if (gameState.timerInterval) {
     clearInterval(gameState.timerInterval);
   }
+  
+  // Zatrzymaj hint timer
+  if (gameState.hintTimer) {
+    clearTimeout(gameState.hintTimer);
+    gameState.hintTimer = null;
+  }
+  hideHint();
   
   // Odkryj wszystkie miny
   if (!won) {
@@ -333,6 +361,164 @@ function showMessage(text, type) {
 function hideMessage() {
   const messageDiv = document.getElementById('game-message');
   messageDiv.style.display = 'none';
+}
+
+// Hint system functions
+
+// Start hint timer - show hint after 3 seconds of inactivity
+function startHintTimer() {
+  gameState.lastInteractionTime = Date.now();
+  
+  if (gameState.hintTimer) {
+    clearTimeout(gameState.hintTimer);
+  }
+  
+  gameState.hintTimer = setTimeout(() => {
+    if (!gameState.gameOver && !gameState.gameWon) {
+      showHint();
+    }
+  }, 3000); // 3 seconds
+}
+
+// Reset hint timer on user interaction
+function resetHintTimer() {
+  hideHint();
+  startHintTimer();
+}
+
+// Find a safe cell to suggest
+function findSafeCellHint() {
+  const { rows, cols } = gameState.config;
+  
+  // Priority 1: Find cells adjacent to revealed numbers that are guaranteed safe
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (gameState.revealed[row][col] && gameState.board[row][col] > 0) {
+        const adjacentCells = getAdjacentCells(row, col);
+        const flaggedCount = adjacentCells.filter(cell => 
+          gameState.flags.some(f => f.row === cell.row && f.col === cell.col)
+        ).length;
+        
+        // If all mines are flagged, adjacent unrevealed cells are safe
+        if (flaggedCount === gameState.board[row][col]) {
+          const safeCells = adjacentCells.filter(cell => 
+            !gameState.revealed[cell.row][cell.col] && 
+            !gameState.flags.some(f => f.row === cell.row && f.col === cell.col)
+          );
+          if (safeCells.length > 0) {
+            return safeCells[0];
+          }
+        }
+      }
+    }
+  }
+  
+  // Priority 2: Find cells adjacent to revealed zeros (always safe)
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (gameState.revealed[row][col] && gameState.board[row][col] === 0) {
+        const adjacentCells = getAdjacentCells(row, col);
+        const safeCells = adjacentCells.filter(cell => 
+          !gameState.revealed[cell.row][cell.col] && 
+          !gameState.flags.some(f => f.row === cell.row && f.col === cell.col)
+        );
+        if (safeCells.length > 0) {
+          return safeCells[0];
+        }
+      }
+    }
+  }
+  
+  // Priority 3: Random unrevealed cell that's not flagged
+  const unrevealed = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (!gameState.revealed[row][col] && 
+          !gameState.flags.some(f => f.row === row && f.col === col)) {
+        unrevealed.push({ row, col });
+      }
+    }
+  }
+  
+  if (unrevealed.length > 0) {
+    return unrevealed[Math.floor(Math.random() * unrevealed.length)];
+  }
+  
+  return null;
+}
+
+// Get adjacent cells for a given position
+function getAdjacentCells(row, col) {
+  const { rows, cols } = gameState.config;
+  const adjacent = [];
+  
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      
+      const newRow = row + dr;
+      const newCol = col + dc;
+      
+      if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+        adjacent.push({ row: newRow, col: newCol });
+      }
+    }
+  }
+  
+  return adjacent;
+}
+
+// Show hint popup
+function showHint() {
+  const hintCell = findSafeCellHint();
+  
+  if (!hintCell) return;
+  
+  gameState.hintTarget = hintCell;
+  
+  // Find the cell element
+  const cellElement = document.querySelector(
+    `.cell[data-row="${hintCell.row}"][data-col="${hintCell.col}"]`
+  );
+  
+  if (!cellElement) return;
+  
+  // Add highlight to the cell
+  cellElement.classList.add('hint-target');
+  
+  // Position and show the hint popup
+  const hintPopup = document.getElementById('hint-popup');
+  const cellRect = cellElement.getBoundingClientRect();
+  const boardRect = document.getElementById('game-board').getBoundingClientRect();
+  
+  // Calculate position relative to viewport
+  hintPopup.style.left = `${cellRect.left + cellRect.width / 2}px`;
+  hintPopup.style.top = `${cellRect.top - 60}px`;
+  hintPopup.style.transform = 'translateX(-50%)';
+  
+  hintPopup.classList.add('active');
+  
+  // Auto-hide after 5 seconds
+  setTimeout(() => {
+    hideHint();
+  }, 5000);
+}
+
+// Hide hint popup
+function hideHint() {
+  const hintPopup = document.getElementById('hint-popup');
+  hintPopup.classList.remove('active');
+  
+  // Remove highlight from target cell
+  if (gameState.hintTarget) {
+    const cellElement = document.querySelector(
+      `.cell[data-row="${gameState.hintTarget.row}"][data-col="${gameState.hintTarget.col}"]`
+    );
+    if (cellElement) {
+      cellElement.classList.remove('hint-target');
+    }
+    gameState.hintTarget = null;
+  }
 }
 
 // Inicjalizuj grę przy załadowaniu strony
