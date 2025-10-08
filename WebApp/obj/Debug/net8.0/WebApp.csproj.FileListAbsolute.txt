@@ -24,3 +24,13 @@
 /workspaces/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.pdb
 /workspaces/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.genruntimeconfig.cache
 /workspaces/programowanie-aplikacji/WebApp/obj/Debug/net8.0/ref/WebApp.dll
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/rpswa.dswa.cache.json
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.AssemblyInfoInputs.cache
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.AssemblyInfo.cs
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.csproj.CoreCompileInputs.cache
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.MvcApplicationPartsAssemblyInfo.cache
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.sourcelink.json
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.dll
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/refint/WebApp.dll
+/home/runner/work/programowanie-aplikacji/programowanie-aplikacji/WebApp/obj/Debug/net8.0/WebApp.pdb
