@@ -1,4 +1,3 @@
-```chatmode
 ---
 description: 'Tryb przeglądu kodu: skup się na czytelności, poprawności i testach.'
 tools: []
@@ -11,4 +10,3 @@ Zasady:
 
 Przykładowy prompt:
 "Mode: review — Przejrzyj `Controllers/` i `Services/` pod kątem braków w walidacji i bezpieczeństwie; zaproponuj poprawki i testy."
-```

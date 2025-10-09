@@ -1,4 +1,3 @@
-```chatmode
 ---
 description: 'Bezpieczny tryb: minimalne, przetestowane zmiany i wyjaśnienia.'
 tools: []
@@ -11,4 +10,4 @@ Zasady:
 
 Przykładowy prompt:
 "Mode: safe — Napraw błąd kompilacji w projekcie i pozostaw minimalne zmiany. Wyjaśnij przyczynę i kroki naprawcze."
-```
+
