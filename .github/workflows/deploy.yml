@@ -1,0 +1,57 @@
+name: Deploy to Production
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore and Build
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        
+    - name: Publish
+      run: dotnet publish --configuration Release --no-build --output ./publish
+      
+    - name: Create deployment package
+      run: |
+        cd publish
+        tar -czf ../minesweeper-api-${{ github.sha }}.tar.gz *
+        cd ..
+        
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment-package
+        path: minesweeper-api-${{ github.sha }}.tar.gz
+        
+    # Uncomment and configure for actual deployment
+    # - name: Deploy to server
+    #   run: |
+    #     # SSH deploy, Docker push, or other deployment
+    #     echo "Deploy to ${{ github.event.inputs.environment || 'production' }}"

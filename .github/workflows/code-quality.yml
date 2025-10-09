@@ -1,0 +1,80 @@
+name: Code Quality Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-dotnet:
+    name: .NET Code Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Format check
+      run: dotnet format --verify-no-changes --verbosity diagnostic
+      continue-on-error: true
+      
+    - name: Build with warnings as errors
+      run: dotnet build --configuration Release /warnaserror
+      continue-on-error: true
+
+  lint-python:
+    name: Python Code Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install linters
+      run: |
+        pip install flake8 black
+        
+    - name: Run flake8
+      run: flake8 *.py --max-line-length=120 --extend-ignore=E203,W503
+      continue-on-error: true
+      
+    - name: Check formatting with black
+      run: black --check *.py
+      continue-on-error: true
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+      continue-on-error: true
+      
+    - name: Upload Trivy results to GitHub Security
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+      continue-on-error: true

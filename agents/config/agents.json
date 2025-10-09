@@ -1,0 +1,29 @@
+{
+  "orchestrator": {
+    "max_concurrent_agents": 5,
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "retry_delay_seconds": 1
+  },
+  "game_agent": {
+    "mcp_server_path": "mcp_server_minesweeper.py",
+    "cache_enabled": false,
+    "cache_ttl_seconds": 60,
+    "validation_strict": true
+  },
+  "data_agent": {
+    "analysis_depth": "full",
+    "report_format": "markdown",
+    "metrics_enabled": true
+  },
+  "mcp_agent": {
+    "connection_pool_size": 3,
+    "protocol_version": "2024-11-05",
+    "auto_reconnect": true
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "agents.log"
+  }
+}

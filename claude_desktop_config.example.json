@@ -1,18 +1,16 @@
 {
-  "mcp": {
-    "servers": {
-      "filesystem": {
-        "command": "npx",
-        "args": ["@modelcontextprotocol/server-filesystem", "/workspaces/programowanie-aplikacji"]
-      },
-      "git": {
-        "command": "npx", 
-        "args": ["@modelcontextprotocol/server-git", "--repository", "/workspaces/programowanie-aplikacji"]
-      },
-      "postgres": {
-        "command": "uvx",
-        "args": ["mcp-server-postgres", "postgresql://user:password@localhost/db"]
-      }
+  "mcpServers": {
+    "minesweeper": {
+      "command": "python3",
+      "args": ["/workspaces/programowanie-aplikacji/mcp_server_minesweeper.py"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "/workspaces/programowanie-aplikacji"]
+    },
+    "git": {
+      "command": "npx", 
+      "args": ["@modelcontextprotocol/server-git", "--repository", "/workspaces/programowanie-aplikacji"]
     }
   }
 }

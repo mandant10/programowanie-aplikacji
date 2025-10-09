@@ -1,0 +1,118 @@
+---
+title: Multi-Agent Orchestration - MinesweeperAPI
+---
+
+graph TB
+    subgraph "🎮 User Layer"
+        User[👤 User/Developer]
+        UI[🖥️ Web UI]
+    end
+
+    subgraph "🤖 Agent Orchestrator"
+        Orchestrator[🎯 Main Orchestrator Agent]
+        
+        subgraph "Specialized Agents"
+            GameAgent[🎮 Game Agent<br/>Zarządza grą i wynikami]
+            DataAgent[📊 Data Agent<br/>Analiza statystyk]
+            MCPAgent[🔧 MCP Agent<br/>Komunikacja MCP]
+            DeployAgent[🚀 Deploy Agent<br/>CI/CD i deployment]
+            MonitorAgent[📈 Monitor Agent<br/>Health checks]
+        end
+    end
+
+    subgraph "🔌 MCP Layer"
+        MCPServer[MCP Server<br/>mcp_server_minesweeper.py]
+        
+        subgraph "MCP Tools"
+            T1[get_scores]
+            T2[submit_score]
+            T3[get_player_progress]
+        end
+        
+        subgraph "MCP Resources"
+            R1[api-docs]
+            R2[game-stats]
+        end
+    end
+
+    subgraph "🏗️ Backend Layer"
+        API[ASP.NET API<br/>:5022]
+        
+        subgraph "Controllers"
+            ScoresCtrl[ScoresController]
+            ProgressCtrl[ProgressController]
+        end
+        
+        subgraph "Services"
+            GameService[GameService]
+        end
+        
+        subgraph "Models"
+            Score[GameScore]
+            Progress[PlayerProgress]
+            Reward[Reward]
+        end
+    end
+
+    subgraph "💾 Data Layer"
+        InMemory[(In-Memory Storage)]
+    end
+
+    %% User interactions
+    User -->|Requests| UI
+    User -->|Prompts| Orchestrator
+    
+    %% Orchestrator delegates to agents
+    Orchestrator -->|Game operations| GameAgent
+    Orchestrator -->|Analytics| DataAgent
+    Orchestrator -->|MCP calls| MCPAgent
+    Orchestrator -->|Deployment| DeployAgent
+    Orchestrator -->|Monitoring| MonitorAgent
+    
+    %% Agents use MCP
+    GameAgent -->|tools/call| MCPServer
+    DataAgent -->|resources/read| MCPServer
+    MCPAgent -->|protocol| MCPServer
+    MonitorAgent -->|health check| MCPServer
+    
+    %% MCP uses tools/resources
+    MCPServer -->|exposes| T1
+    MCPServer -->|exposes| T2
+    MCPServer -->|exposes| T3
+    MCPServer -->|exposes| R1
+    MCPServer -->|exposes| R2
+    
+    %% MCP calls API
+    T1 -->|HTTP GET| ScoresCtrl
+    T2 -->|HTTP POST| ScoresCtrl
+    T3 -->|HTTP GET| ProgressCtrl
+    
+    %% API uses services
+    ScoresCtrl -->|uses| GameService
+    ProgressCtrl -->|uses| GameService
+    
+    %% Services use models
+    GameService -->|manages| Score
+    GameService -->|manages| Progress
+    GameService -->|manages| Reward
+    
+    %% Data storage
+    GameService -->|CRUD| InMemory
+    
+    %% UI interactions
+    UI -->|HTTP| API
+    
+    %% Deploy agent interactions
+    DeployAgent -->|triggers| API
+    DeployAgent -.->|monitors| MonitorAgent
+
+    %% Styling
+    classDef agentClass fill:#4CAF50,stroke:#2E7D32,stroke-width:2px,color:#fff
+    classDef mcpClass fill:#2196F3,stroke:#1565C0,stroke-width:2px,color:#fff
+    classDef apiClass fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    classDef dataClass fill:#9C27B0,stroke:#6A1B9A,stroke-width:2px,color:#fff
+    
+    class Orchestrator,GameAgent,DataAgent,MCPAgent,DeployAgent,MonitorAgent agentClass
+    class MCPServer,T1,T2,T3,R1,R2 mcpClass
+    class API,ScoresCtrl,ProgressCtrl,GameService apiClass
+    class InMemory,Score,Progress,Reward dataClass
