@@ -1,15 +1,14 @@
 ```chatmode
 ---
-description: 'Conservative mode: prefer minimal, well-tested changes and ask clarifying questions.'
+description: 'Bezpieczny tryb: minimalne, przetestowane zmiany i wyjaśnienia.'
 tools: []
 ---
-Tryb "safe" — zachowawczy tryb, koncentruje się na poprawności, małej ingerencji i testach. Zanim wprowadzisz większe zmiany, zapytaj o potwierdzenie. Dostarczaj wyjaśnień i sugeruj rollback lub alternatywy, jeśli zmiana jest ryzykowna.
+Tryb "safe" — zachowawczy tryb skupiony na poprawności i minimalnej ingerencji. Zanim wykonasz większe refaktory, zapytaj o potwierdzenie. Dostarczaj szczegółowe wyjaśnienia zmian i sugeruj plan rollback.
 
 Zasady:
 - Priorytet: stabilność i testy.
-- Ogranicz zmiany do minimum potrzebnego do rozwiązania problemu.
-- Zawsze opisz przyczynę zmiany i jej wpływ.
+- Ogranicz zmiany do minimum koniecznego do rozwiązania problemu.
 
 Przykładowy prompt:
-"Mode: safe — Fix the failing unit test in `GameServiceTests`. Keep changes minimal and explain why the test failed."
+"Mode: safe — Napraw błąd kompilacji w projekcie i pozostaw minimalne zmiany. Wyjaśnij przyczynę i kroki naprawcze."
 ```
